@@ -1,9 +1,13 @@
 from django.db.models import get_model
 from django.http import HttpResponse
 from django.utils import simplejson
+
+from django.contrib.auth.decorators import  login_required
+
 import locale
 from smart_selects.utils import unicode_sorter
 
+@login_required
 def filterchain(request, app, model, field, value):
     Model = get_model(app, model)
     if value == '0':
@@ -18,6 +22,8 @@ def filterchain(request, app, model, field, value):
     json = simplejson.dumps(result)
     return HttpResponse(json, mimetype='application/json')
 
+
+@login_required
 def filterchain_all(request, app, model, field, value):
     Model = get_model(app, model)
     if value == '0':
